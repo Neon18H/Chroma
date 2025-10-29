@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  chroma:
+    # Imagen oficial de ChromaDB. Se define mediante variables de entorno para facilitar actualizaciones.
+    image: "${CHROMA_IMAGE}"
+    # Publica el puerto configurado en .env hacia el puerto interno 8000 del contenedor.
+    ports:
+      - "${CHROMA_PORT}:8000"
+    # Directorio para persistir los datos vectoriales en el host.
+    volumes:
+      - "./chroma_data:/chroma/chroma"
+    # Variables de entorno que controlan la persistencia y telemetría.
+    environment:
+      IS_PERSISTENT: "${CHROMA_IS_PERSISTENT}"
+      PERSIST_DIRECTORY: "/chroma/chroma"
+      ANONYMIZED_TELEMETRY: "${CHROMA_TELEMETRY}"
+    # Política de reinicio para mantener el servicio activo.
+    restart: unless-stopped
